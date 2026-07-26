@@ -130,6 +130,24 @@ DMG будет создан в `dist/Translator.dmg`. Внутри будут `T
 
 Скрипт сборки создаёт `Translator.app`, копирует иконку и `Info.plist`, очищает extended attributes, которые могут мешать подписи, и подписывает bundle. Если найден сертификат Apple Development, используется он. Если сертификата нет, применяется ad-hoc подпись.
 
+## Публикация релиза через GitHub Actions
+
+В репозитории есть workflow `.github/workflows/release.yml`. Он собирается на GitHub-hosted runner `macos-26`, чтобы использовать Xcode 26 SDK для новых SwiftUI API.
+
+Workflow работает в двух режимах:
+
+- `workflow_dispatch` — ручной запуск из вкладки Actions. GitHub соберёт `dist/Translator.dmg` и сохранит его как artifact.
+- push тега `v*` — GitHub соберёт DMG и прикрепит файл к GitHub Release.
+
+Чтобы выпустить новую версию:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+После завершения workflow файл `Translator.dmg` появится в разделе Releases.
+
 ## CLI-режимы для проверки
 
 После сборки можно запустить:
