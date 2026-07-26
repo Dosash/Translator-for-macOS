@@ -14,7 +14,7 @@ if [ ! -f AppIcon.icns ]; then
   swift make_icon.swift
 fi
 
-echo "→ Сборка бандла $APP…"
+echo "→ Сборка бандла ${APP}…"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BINARY" "$APP/Contents/MacOS/Translator"
