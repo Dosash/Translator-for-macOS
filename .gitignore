@@ -1,0 +1,17 @@
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserdata/
+*.xcuserstate
+
+# Built app bundles and generated release artifacts
+Translator.app/
+*.dSYM/
+*.zip
+*.dmg
+
+# Local logs and macOS metadata
+*.log
+.DS_Store
+
+dist/
