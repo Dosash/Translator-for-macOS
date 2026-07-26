@@ -15,3 +15,8 @@ Translator.app/
 .DS_Store
 
 dist/
+
+# Local project notes
+TASKS.md
+ЖУРНАЛ_РАБОТ.md
+ПРОЕКТ.md

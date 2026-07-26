@@ -167,7 +167,6 @@ Info.plist
 build_app.sh
 build_dmg.sh
 make_icon.swift
-TASKS.md
 Sources/Translator/
   TranslatorApp.swift
   TranslatorView.swift
@@ -196,10 +195,6 @@ Sources/Translator/
 Офлайн-перевод использует Apple Translation на устройстве после установки нужных языковых пакетов.
 
 Настройки и последние элементы истории переводов сохраняются локально в `UserDefaults`.
-
-## План работ
-
-Смотрите [TASKS.md](TASKS.md).
 
 ## Лицензия
 
