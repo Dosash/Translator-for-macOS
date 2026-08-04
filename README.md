@@ -148,6 +148,25 @@ git push origin v1.0.0
 
 После завершения workflow файл `Translator.dmg` появится в разделе Releases.
 
+## Подготовка к Mac App Store
+
+В проект добавлены базовые файлы для App Store-подготовки:
+
+- `Translator.entitlements` — включает App Sandbox и исходящие сетевые подключения.
+- `PrivacyInfo.xcprivacy` — декларирует использование `UserDefaults` для локальных настроек и истории.
+- `LSApplicationCategoryType` — категория `public.app-category.utilities`.
+- `build_app_store_pkg.sh` — создаёт `.pkg` для загрузки в App Store Connect при наличии Mac App Store certificates.
+
+Сборка `.pkg` требует сертификаты Apple Developer Program:
+
+```bash
+APP_STORE_APP_SIGNING_IDENTITY="3rd Party Mac Developer Application: Your Name (TEAMID)" \
+APP_STORE_INSTALLER_SIGNING_IDENTITY="3rd Party Mac Developer Installer: Your Name (TEAMID)" \
+./build_app_store_pkg.sh
+```
+
+Для App Store-версии стоит проверить продуктовую политику: приложение сейчас умеет проверять обновления через GitHub Releases для direct distribution. Если сборка пойдёт именно в Mac App Store, обновления лучше получать через App Store, а ключ `TranslatorLatestReleaseURL` можно не добавлять в App Store build.
+
 ## CLI-режимы для проверки
 
 После сборки можно запустить:
@@ -166,7 +185,9 @@ Package.swift
 Info.plist
 build_app.sh
 build_dmg.sh
+build_app_store_pkg.sh
 make_icon.swift
+Translator.entitlements
 Sources/Translator/
   TranslatorApp.swift
   TranslatorView.swift

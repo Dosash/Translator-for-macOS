@@ -8,6 +8,8 @@ swift build -c release
 
 APP="Translator.app"
 BINARY=".build/release/Translator"
+ENTITLEMENTS="Translator.entitlements"
+PRIVACY_MANIFEST="Sources/Translator/Resources/PrivacyInfo.xcprivacy"
 
 if [ ! -f AppIcon.icns ]; then
   echo "→ Генерация иконки приложения…"
@@ -20,18 +22,30 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BINARY" "$APP/Contents/MacOS/Translator"
 cp Info.plist "$APP/Contents/Info.plist"
 cp AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+if [ -f "$PRIVACY_MANIFEST" ]; then
+  cp "$PRIVACY_MANIFEST" "$APP/Contents/Resources/PrivacyInfo.xcprivacy"
+fi
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 xattr -cr "$APP" 2>/dev/null || true
 
 echo "→ Подпись…"
-IDENTITY=$(security find-identity -v -p codesigning | awk -F '"' '/Apple Development/ {print $2; exit}')
+IDENTITY="${SIGNING_IDENTITY:-}"
+if [ -z "$IDENTITY" ]; then
+  IDENTITY=$(security find-identity -v -p codesigning | awk -F '"' '/Apple Development/ {print $2; exit}')
+fi
+
+SIGN_ARGS=(--force --options runtime)
+if [ -f "$ENTITLEMENTS" ]; then
+  SIGN_ARGS+=(--entitlements "$ENTITLEMENTS")
+fi
+
 if [ -n "$IDENTITY" ]; then
   # Постоянный сертификат: разрешения macOS переживают пересборки.
   echo "  Сертификат: $IDENTITY"
-  codesign --force --sign "$IDENTITY" "$APP"
+  codesign "${SIGN_ARGS[@]}" --sign "$IDENTITY" "$APP"
 else
   echo "  Сертификат не найден — одноразовая (ad-hoc) подпись."
-  codesign --force --sign - "$APP"
+  codesign "${SIGN_ARGS[@]}" --sign - "$APP"
 fi
 
 # Обновляем кэш системных служб, чтобы «Перевести выделенный текст»

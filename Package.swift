@@ -10,6 +10,9 @@ let package = Package(
         .executableTarget(
             name: "Translator",
             path: "Sources/Translator",
+            resources: [
+                .process("Resources")
+            ],
             swiftSettings: [
                 .swiftLanguageMode(.v5)
             ]
