@@ -3,7 +3,7 @@ import Translation
 
 struct TranslatorView: View {
     @ObservedObject var model: TranslatorModel
-    @AppStorage("appTheme") private var appTheme = AppTheme.frostGlass.rawValue
+    @AppStorage("appTheme") private var appTheme = AppTheme.calmGlass.rawValue
     @AppStorage("panelSizeMode") private var panelSizeMode = PanelSizeMode.standard.rawValue
     @AppStorage("offlineOnly") private var offlineOnly = false
     @AppStorage("appLanguage") private var appLanguage = AppUILanguage.system.rawValue

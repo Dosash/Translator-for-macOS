@@ -8,7 +8,7 @@ struct DownloadView: View {
     @ObservedObject var model: TranslatorModel
     var onClose: () -> Void
 
-    @AppStorage("appTheme") private var appTheme = AppTheme.frostGlass.rawValue
+    @AppStorage("appTheme") private var appTheme = AppTheme.calmGlass.rawValue
     @State private var busyCode: String?
     @State private var config: TranslationSession.Configuration?
     @State private var message: String?

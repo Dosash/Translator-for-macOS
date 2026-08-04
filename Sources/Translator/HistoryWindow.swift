@@ -3,7 +3,7 @@ import SwiftUI
 /// Окно истории: последние переводы (хранится максимум 10).
 struct HistoryView: View {
     @ObservedObject var model: TranslatorModel
-    @AppStorage("appTheme") private var appTheme = AppTheme.frostGlass.rawValue
+    @AppStorage("appTheme") private var appTheme = AppTheme.calmGlass.rawValue
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {

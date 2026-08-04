@@ -13,6 +13,7 @@ extension Color {
 }
 
 enum AppTheme: String, CaseIterable, Identifiable {
+    case calmGlass
     case neonGlass
     case frostGlass
 
@@ -20,17 +21,20 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     static func stored(_ rawValue: String?) -> AppTheme {
         switch rawValue {
+        case calmGlass.rawValue:
+            return .calmGlass
         case neonGlass.rawValue, "liquidGlass":
             return .neonGlass
         case frostGlass.rawValue, "mindora":
             return .frostGlass
         default:
-            return .frostGlass
+            return .calmGlass
         }
     }
 
     var nameRu: String {
         switch self {
+        case .calmGlass: return "Calm Glass"
         case .neonGlass: return "Neon Glass"
         case .frostGlass: return "Frost Glass"
         }
@@ -38,14 +42,14 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var caption: String {
         switch self {
+        case .calmGlass: return "мягкое белое стекло с зелёным акцентом"
         case .neonGlass: return "тёмное стекло с неоновым свечением"
         case .frostGlass: return "светлое матовое стекло"
         }
     }
 }
 
-/// Палитра приложения в двух вариантах по стеклянным UI-референсам:
-/// тёмный неон и светлое матовое стекло.
+/// Палитра приложения в стеклянных UI-вариантах.
 enum Theme {
     static var current: AppTheme {
         AppTheme.stored(UserDefaults.standard.string(forKey: "appTheme"))
@@ -63,32 +67,51 @@ enum Theme {
         Color(nsColor: NSColor.controlAccentColor)
     }
 
+    static var usesFixedAccent: Bool {
+        current == .calmGlass
+    }
+
     static var sage: Color {
-        systemAccent
+        usesFixedAccent ? Color(hex: 0x28A97A) : systemAccent
     }
 
     static var sageDeep: Color {
-        systemAccent
+        usesFixedAccent ? Color(hex: 0x1E8D66) : systemAccent
     }
 
     static var sky: Color {
-        systemAccent.opacity(isDark ? 0.88 : 0.78)
+        if current == .calmGlass {
+            return Color(hex: 0x7FA8DD)
+        }
+        return systemAccent.opacity(isDark ? 0.88 : 0.78)
     }
 
     static var ink: Color {
-        isDark ? Color(hex: 0xF5FBFF) : Color(hex: 0x111827)
+        if current == .calmGlass {
+            return Color(hex: 0x1E2A32)
+        }
+        return isDark ? Color(hex: 0xF5FBFF) : Color(hex: 0x111827)
     }
 
     static var mist: Color {
-        isDark ? Color(hex: 0x07111E) : Color(hex: 0xEEF3F8)
+        if current == .calmGlass {
+            return Color(hex: 0xEFF7F4)
+        }
+        return isDark ? Color(hex: 0x07111E) : Color(hex: 0xEEF3F8)
     }
 
     static var mistDeep: Color {
-        isDark ? Color(hex: 0x130A24) : Color(hex: 0xD5DEE8)
+        if current == .calmGlass {
+            return Color(hex: 0xDDEBE6)
+        }
+        return isDark ? Color(hex: 0x130A24) : Color(hex: 0xD5DEE8)
     }
 
     static var rose: Color {
-        isDark ? Color(hex: 0xFF58D2) : Color(hex: 0xFF80B6)
+        if current == .calmGlass {
+            return Color(hex: 0xE88B8B)
+        }
+        return isDark ? Color(hex: 0xFF58D2) : Color(hex: 0xFF80B6)
     }
 
     static var roseInk: Color {
@@ -97,48 +120,77 @@ enum Theme {
 
     static var background: LinearGradient {
         LinearGradient(
-            colors: isDark
-                ? [Color(hex: 0x06111D), Color(hex: 0x111A31), Color(hex: 0x210B2E)]
-                : [Color(hex: 0xF7FAFD), Color(hex: 0xE2E9F1), Color(hex: 0xCAD4DF)],
+            colors: current == .calmGlass
+                ? [Color(hex: 0xF8FBFA), Color(hex: 0xEEF7F4), Color(hex: 0xEAF2F8)]
+                : (isDark
+                    ? [Color(hex: 0x06111D), Color(hex: 0x111A31), Color(hex: 0x210B2E)]
+                    : [Color(hex: 0xF7FAFD), Color(hex: 0xE2E9F1), Color(hex: 0xCAD4DF)]),
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
     }
 
     static var cardFill: Color {
-        isDark ? Color.white.opacity(0.10) : Color.white.opacity(0.42)
+        if current == .calmGlass {
+            return Color.white.opacity(0.68)
+        }
+        return isDark ? Color.white.opacity(0.10) : Color.white.opacity(0.42)
     }
 
     static var cardStroke: Color {
-        isDark ? Color.white.opacity(0.26) : Color.white.opacity(0.74)
+        if current == .calmGlass {
+            return Color.white.opacity(0.86)
+        }
+        return isDark ? Color.white.opacity(0.26) : Color.white.opacity(0.74)
     }
 
     static var glassTint: Color {
-        isDark ? systemAccent.opacity(0.16) : Color.white.opacity(0.24)
+        if current == .calmGlass {
+            return Color(hex: 0xEAF6F2).opacity(0.34)
+        }
+        return isDark ? systemAccent.opacity(0.16) : Color.white.opacity(0.24)
     }
 
     static var glow: Color {
-        isDark ? systemAccent.opacity(0.46) : Color.black.opacity(0.14)
+        if current == .calmGlass {
+            return Color(hex: 0x9BB9AE).opacity(0.22)
+        }
+        return isDark ? systemAccent.opacity(0.46) : Color.black.opacity(0.14)
     }
 
     static var secondaryGlow: Color {
-        isDark ? systemAccent.opacity(0.34) : Color.white.opacity(0.7)
+        if current == .calmGlass {
+            return Color(hex: 0x8FCAB9).opacity(0.34)
+        }
+        return isDark ? systemAccent.opacity(0.34) : Color.white.opacity(0.7)
     }
 
     static var controlFill: Color {
-        isDark ? Color.white.opacity(0.12) : Color.white.opacity(0.70)
+        if current == .calmGlass {
+            return Color.white.opacity(0.78)
+        }
+        return isDark ? Color.white.opacity(0.12) : Color.white.opacity(0.70)
     }
 
     static var selectedControlFill: Color {
-        isDark ? systemAccent.opacity(0.24) : systemAccent.opacity(0.14)
+        if current == .calmGlass {
+            return Color(hex: 0xDDF2EA)
+        }
+        return isDark ? systemAccent.opacity(0.24) : systemAccent.opacity(0.14)
     }
 
     static var controlStroke: Color {
-        isDark ? Color.white.opacity(0.18) : Color.white.opacity(0.82)
+        if current == .calmGlass {
+            return Color(hex: 0xDBE8E3).opacity(0.88)
+        }
+        return isDark ? Color.white.opacity(0.18) : Color.white.opacity(0.82)
     }
 
     static var secondaryText: Color {
-        isDark ? Color.white.opacity(0.64) : Color(hex: 0x5B6472)
+        if current == .calmGlass {
+            return Color(hex: 0x7A8790)
+        }
+        return isDark ? Color.white.opacity(0.64) : Color(hex: 0x5B6472)
     }
 }
 

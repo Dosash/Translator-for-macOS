@@ -112,6 +112,9 @@ final class SettingsStore: ObservableObject {
     var onRecordingStateChanged: ((Bool) -> Void)?
 
     init() {
+        let defaults = UserDefaults.standard
+        Self.migrateDefaultThemeIfNeeded(defaults: defaults)
+
         selectionHotkey = Self.loadHotkey(key: "selectionHotkey") ?? Hotkey(
             keyCode: UInt32(kVK_ANSI_T),
             modifiers: UInt32(controlKey | optionKey),
@@ -122,13 +125,23 @@ final class SettingsStore: ObservableObject {
             modifiers: UInt32(controlKey | optionKey),
             display: "⌃⌥C"
         )
-        autoTranslate = UserDefaults.standard.object(forKey: "autoTranslate") as? Bool ?? true
-        offlineOnly = UserDefaults.standard.object(forKey: "offlineOnly") as? Bool ?? false
-        appTheme = AppTheme.stored(UserDefaults.standard.string(forKey: "appTheme"))
-        panelSizeMode = PanelSizeMode.stored(UserDefaults.standard.string(forKey: "panelSizeMode"))
-        appLanguage = AppUILanguage.stored(UserDefaults.standard.string(forKey: "appLanguage"))
+        autoTranslate = defaults.object(forKey: "autoTranslate") as? Bool ?? true
+        offlineOnly = defaults.object(forKey: "offlineOnly") as? Bool ?? false
+        appTheme = AppTheme.stored(defaults.string(forKey: "appTheme"))
+        panelSizeMode = PanelSizeMode.stored(defaults.string(forKey: "panelSizeMode"))
+        appLanguage = AppUILanguage.stored(defaults.string(forKey: "appLanguage"))
         launchAtLogin = SMAppService.mainApp.status == .enabled
-        hasCompletedFirstRun = UserDefaults.standard.object(forKey: "hasCompletedFirstRun") as? Bool ?? false
+        hasCompletedFirstRun = defaults.object(forKey: "hasCompletedFirstRun") as? Bool ?? false
+    }
+
+    private static func migrateDefaultThemeIfNeeded(defaults: UserDefaults) {
+        let migrationKey = "didMigrateDefaultThemeToCalmGlass"
+        guard defaults.object(forKey: migrationKey) == nil else { return }
+
+        if defaults.string(forKey: "appTheme") == nil || defaults.string(forKey: "appTheme") == AppTheme.frostGlass.rawValue {
+            defaults.set(AppTheme.calmGlass.rawValue, forKey: "appTheme")
+        }
+        defaults.set(true, forKey: migrationKey)
     }
 
     func completeFirstRun() {

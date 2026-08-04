@@ -265,19 +265,15 @@ struct SettingsView: View {
             HStack(spacing: 8) {
                 RoundedRectangle(cornerRadius: 6, style: .continuous)
                     .fill(LinearGradient(
-                        colors: theme == .neonGlass
-                            ? [Color(hex: 0x0A1524), Color(hex: 0x28113A)]
-                            : [Color(hex: 0xF7FAFD), Color(hex: 0xD8E2EC)],
+                        colors: themePreviewColors(theme),
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ))
                     .overlay(
                         Circle()
-                            .fill(Theme.systemAccent)
+                            .fill(themePreviewAccent(theme))
                             .shadow(
-                                color: theme == .neonGlass
-                                    ? Theme.systemAccent.opacity(0.8)
-                                    : Color.white.opacity(0.8),
+                                color: themePreviewGlow(theme),
                                 radius: theme == .neonGlass ? 5 : 2
                             )
                             .frame(width: 12, height: 12)
@@ -321,6 +317,32 @@ struct SettingsView: View {
             .shadow(color: isSelected ? Theme.glow : .clear, radius: isSelected ? 8 : 0, x: 0, y: 3)
         }
         .buttonStyle(.plain)
+    }
+
+    private func themePreviewColors(_ theme: AppTheme) -> [Color] {
+        switch theme {
+        case .calmGlass:
+            return [Color(hex: 0xF8FBFA), Color(hex: 0xEAF6F2), Color(hex: 0xEAF2F8)]
+        case .neonGlass:
+            return [Color(hex: 0x0A1524), Color(hex: 0x28113A)]
+        case .frostGlass:
+            return [Color(hex: 0xF7FAFD), Color(hex: 0xD8E2EC)]
+        }
+    }
+
+    private func themePreviewAccent(_ theme: AppTheme) -> Color {
+        theme == .calmGlass ? Color(hex: 0x28A97A) : Theme.systemAccent
+    }
+
+    private func themePreviewGlow(_ theme: AppTheme) -> Color {
+        switch theme {
+        case .calmGlass:
+            return Color(hex: 0x8FCAB9).opacity(0.55)
+        case .neonGlass:
+            return Theme.systemAccent.opacity(0.8)
+        case .frostGlass:
+            return Color.white.opacity(0.8)
+        }
     }
 
     private var permissionRow: some View {

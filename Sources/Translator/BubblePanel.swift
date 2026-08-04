@@ -89,7 +89,7 @@ struct BubbleView: View {
     @ObservedObject var model: TranslatorModel
     var onReplace: () -> Void
     var onExpand: () -> Void
-    @AppStorage("appTheme") private var appTheme = AppTheme.frostGlass.rawValue
+    @AppStorage("appTheme") private var appTheme = AppTheme.calmGlass.rawValue
     @State private var justCopied = false
 
     var body: some View {
