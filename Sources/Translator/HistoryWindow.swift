@@ -10,16 +10,16 @@ struct HistoryView: View {
             HStack(spacing: 10) {
                 LogoMark(size: 30)
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("История переводов")
+                    Text(L10n.t("history"))
                         .font(.system(size: 15, weight: .bold, design: .serif))
                         .foregroundStyle(Theme.ink)
-                    Text("хранятся последние \(TranslatorModel.historyLimit)")
+                    Text(L10n.format("history.subtitle", TranslatorModel.historyLimit))
                         .font(.system(size: 10, design: .rounded))
                         .foregroundStyle(Theme.ink.opacity(0.5))
                 }
                 Spacer()
                 if !model.history.isEmpty {
-                    Button("Очистить") { model.clearHistory() }
+                    Button(L10n.t("clear")) { model.clearHistory() }
                         .buttonStyle(.plain)
                         .font(.system(size: 11, weight: .semibold, design: .rounded))
                         .foregroundStyle(Theme.roseInk)
@@ -31,7 +31,7 @@ struct HistoryView: View {
                     Image(systemName: "clock.arrow.circlepath")
                         .font(.system(size: 28))
                         .foregroundStyle(Theme.ink.opacity(0.25))
-                    Text("Пока пусто — переводы будут появляться здесь")
+                    Text(L10n.t("history.empty"))
                         .font(.system(size: 12, design: .rounded))
                         .foregroundStyle(Theme.ink.opacity(0.5))
                 }
@@ -83,7 +83,7 @@ struct HistoryView: View {
                     Image(systemName: "doc.on.doc")
                 }
                 .buttonStyle(IconCircleButtonStyle(size: 24))
-                .help("Копировать перевод")
+                .help(L10n.t("copy.translation"))
             }
         }
         .padding(12)

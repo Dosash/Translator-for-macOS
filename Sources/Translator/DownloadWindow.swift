@@ -18,13 +18,13 @@ struct DownloadView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 10) {
                 LogoMark(size: 30)
-                Text("Офлайн-языки")
+                Text(L10n.t("offline.languages"))
                     .font(.system(size: 15, weight: .bold, design: .serif))
                     .foregroundStyle(Theme.ink)
                 Spacer()
             }
 
-            Text("Английский используется как опорный язык. Остальные языки скачиваются один раз и дальше переводятся без интернета.")
+            Text(L10n.t("offline.intro"))
                 .font(.system(size: 10, design: .rounded))
                 .foregroundStyle(Theme.ink.opacity(0.55))
                 .fixedSize(horizontal: false, vertical: true)
@@ -55,14 +55,14 @@ struct DownloadView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            Text("Офлайн-модели занимают место на диске, а перевод длинных текстов без интернета работает медленнее и нагружает процессор.")
+            Text(L10n.t("offline.disk.note"))
                 .font(.system(size: 9, design: .rounded))
                 .foregroundStyle(Theme.ink.opacity(0.45))
                 .fixedSize(horizontal: false, vertical: true)
 
             HStack {
                 Spacer()
-                Button("Закрыть") { onClose() }
+                Button(L10n.t("close")) { onClose() }
                     .buttonStyle(PillButtonStyle())
                     .keyboardShortcut(.defaultAction)
             }
@@ -99,11 +99,11 @@ struct DownloadView: View {
                 Circle()
                     .fill(Theme.sage)
                     .frame(width: 7, height: 7)
-                Text(language.nameRu)
+                Text(L10n.languageName(language.googleCode))
                     .font(.system(size: 12, weight: .medium, design: .rounded))
                     .foregroundStyle(Theme.ink)
                 Spacer()
-                Text("опорный язык")
+                Text(L10n.t("base.language"))
                     .font(.system(size: 10, design: .rounded))
                     .foregroundStyle(Theme.sage)
             }
@@ -115,7 +115,7 @@ struct DownloadView: View {
                 Circle()
                     .fill(state == .installed ? Theme.sage : (state == .unsupported ? Theme.ink.opacity(0.25) : Theme.rose))
                     .frame(width: 7, height: 7)
-                Text(language.nameRu)
+                Text(L10n.languageName(language.googleCode))
                     .font(.system(size: 12, weight: .medium, design: .rounded))
                     .foregroundStyle(Theme.ink)
                 Spacer()
@@ -124,15 +124,15 @@ struct DownloadView: View {
                 } else {
                     switch state {
                     case .installed:
-                        Text("скачан")
+                        Text(L10n.t("downloaded"))
                             .font(.system(size: 10, design: .rounded))
                             .foregroundStyle(Theme.sage)
                     case .unsupported:
-                        Text("недоступен")
+                        Text(L10n.t("unsupported"))
                             .font(.system(size: 10, design: .rounded))
                             .foregroundStyle(Theme.ink.opacity(0.4))
                     default:
-                        Button(model.offlineUpdateCodes.contains(language.googleCode) ? "Обновить" : "Скачать") {
+                        Button(model.offlineUpdateCodes.contains(language.googleCode) ? L10n.t("update") : L10n.t("download")) {
                             startDownload(language)
                         }
                             .buttonStyle(.plain)
@@ -167,7 +167,7 @@ struct DownloadView: View {
                 .foregroundStyle(Theme.ink.opacity(0.65))
                 .fixedSize(horizontal: false, vertical: true)
             Spacer()
-            Button("Позже") { model.dismissOfflineUpdateNotice() }
+            Button(L10n.t("later")) { model.dismissOfflineUpdateNotice() }
                 .buttonStyle(.plain)
                 .font(.system(size: 10, weight: .semibold, design: .rounded))
                 .foregroundStyle(Theme.ink.opacity(0.45))

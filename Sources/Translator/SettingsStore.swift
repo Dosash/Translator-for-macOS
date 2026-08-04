@@ -21,18 +21,26 @@ enum PanelSizeMode: String, CaseIterable, Identifiable {
     }
 
     var nameRu: String {
-        switch self {
-        case .compact: return "Компактная"
-        case .standard: return "Стандартная"
-        case .wide: return "Широкая"
-        }
+        localizedName
     }
 
     var caption: String {
+        localizedCaption
+    }
+
+    var localizedName: String {
         switch self {
-        case .compact: return "быстрый перевод"
-        case .standard: return "баланс места и чтения"
-        case .wide: return "длинные фразы и абзацы"
+        case .compact: return L10n.t("panel.compact")
+        case .standard: return L10n.t("panel.standard")
+        case .wide: return L10n.t("panel.wide")
+        }
+    }
+
+    var localizedCaption: String {
+        switch self {
+        case .compact: return L10n.t("panel.compact.caption")
+        case .standard: return L10n.t("panel.standard.caption")
+        case .wide: return L10n.t("panel.wide.caption")
         }
     }
 
@@ -81,6 +89,9 @@ final class SettingsStore: ObservableObject {
     @Published var panelSizeMode: PanelSizeMode {
         didSet { UserDefaults.standard.set(panelSizeMode.rawValue, forKey: "panelSizeMode") }
     }
+    @Published var appLanguage: AppUILanguage {
+        didSet { UserDefaults.standard.set(appLanguage.rawValue, forKey: "appLanguage") }
+    }
     @Published var launchAtLogin: Bool {
         didSet { applyLaunchAtLogin() }
     }
@@ -115,6 +126,7 @@ final class SettingsStore: ObservableObject {
         offlineOnly = UserDefaults.standard.object(forKey: "offlineOnly") as? Bool ?? false
         appTheme = AppTheme.stored(UserDefaults.standard.string(forKey: "appTheme"))
         panelSizeMode = PanelSizeMode.stored(UserDefaults.standard.string(forKey: "panelSizeMode"))
+        appLanguage = AppUILanguage.stored(UserDefaults.standard.string(forKey: "appLanguage"))
         launchAtLogin = SMAppService.mainApp.status == .enabled
         hasCompletedFirstRun = UserDefaults.standard.object(forKey: "hasCompletedFirstRun") as? Bool ?? false
     }

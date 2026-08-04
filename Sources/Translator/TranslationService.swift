@@ -93,15 +93,15 @@ final class TranslatorModel: ObservableObject {
 
     var enginePrivacyText: String {
         if engineUsed.contains("Google") {
-            return "Google онлайн: текст отправлен в интернет"
+            return L10n.t("engine.google.privacy")
         }
         if engineUsed.contains("Apple") {
-            return "Apple офлайн: текст обработан на устройстве"
+            return L10n.t("engine.apple.privacy")
         }
         if settings?.offlineOnly ?? false {
-            return "Только офлайн: Google отключён"
+            return L10n.t("engine.offline.only")
         }
-        return "Движок будет выбран при переводе"
+        return L10n.t("engine.pending")
     }
 
     var onDownloadRequest: (() -> Void)?

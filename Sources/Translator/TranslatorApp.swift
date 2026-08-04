@@ -327,7 +327,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         let menu = NSMenu()
 
         let selectionItem = NSMenuItem(
-            title: "Перевести выделенный текст (\(settings.selectionHotkey.display))",
+            title: "\(L10n.t("hotkey.selection")) (\(settings.selectionHotkey.display))",
             action: #selector(menuTranslateSelection),
             keyEquivalent: ""
         )
@@ -335,7 +335,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         menu.addItem(selectionItem)
 
         let clipboardItem = NSMenuItem(
-            title: "Перевести из буфера обмена (\(settings.clipboardHotkey.display))",
+            title: "\(L10n.t("hotkey.clipboard")) (\(settings.clipboardHotkey.display))",
             action: #selector(menuTranslateClipboard),
             keyEquivalent: ""
         )
@@ -345,7 +345,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         menu.addItem(.separator())
 
         let historyItem = NSMenuItem(
-            title: "История переводов…",
+            title: L10n.t("history"),
             action: #selector(menuOpenHistory),
             keyEquivalent: ""
         )
@@ -353,7 +353,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         menu.addItem(historyItem)
 
         let settingsItem = NSMenuItem(
-            title: "Настройки…",
+            title: L10n.t("settings"),
             action: #selector(menuOpenSettings),
             keyEquivalent: ""
         )
@@ -361,7 +361,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         menu.addItem(settingsItem)
 
         menu.addItem(.separator())
-        let quitItem = NSMenuItem(title: "Выход", action: #selector(quit), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: L10n.t("quit"), action: #selector(quit), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
 

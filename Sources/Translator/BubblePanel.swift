@@ -125,7 +125,7 @@ struct BubbleView: View {
                 ProgressView()
                     .controlSize(.small)
                     .tint(Theme.sage)
-                Text("Перевожу…")
+                Text(L10n.t("translating"))
                     .font(.system(size: 12, design: .rounded))
                     .foregroundStyle(Theme.ink.opacity(0.55))
             }
@@ -143,10 +143,10 @@ struct BubbleView: View {
 
     private var footer: some View {
         HStack(spacing: 8) {
-            Button("Заменить") { onReplace() }
+            Button(L10n.t("replace")) { onReplace() }
                 .buttonStyle(PillButtonStyle())
                 .disabled(model.outputText.isEmpty)
-                .help("Вставить перевод вместо выделенного текста (сработает только там, где текст можно редактировать)")
+                .help(L10n.t("replace.help"))
             Button {
                 model.speakOutput()
             } label: {
@@ -154,7 +154,7 @@ struct BubbleView: View {
             }
             .buttonStyle(IconCircleButtonStyle(fill: Theme.sky, size: 24))
             .disabled(model.outputText.isEmpty)
-            .help("Озвучить перевод")
+            .help(L10n.t("speak.translation"))
             Button {
                 model.copyResult()
                 withAnimation { justCopied = true }
@@ -167,7 +167,7 @@ struct BubbleView: View {
             }
             .buttonStyle(IconCircleButtonStyle(size: 24))
             .disabled(model.outputText.isEmpty)
-            .help("Копировать перевод")
+            .help(L10n.t("copy.translation"))
             Spacer()
             if !model.engineUsed.isEmpty, model.errorMessage == nil, !model.outputText.isEmpty {
                 Text(model.engineUsed)
@@ -182,7 +182,7 @@ struct BubbleView: View {
                     .foregroundStyle(Theme.ink.opacity(0.45))
             }
             .buttonStyle(.plain)
-            .help("Открыть в большой панели")
+            .help(L10n.t("expand.panel"))
         }
     }
 }

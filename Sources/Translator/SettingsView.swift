@@ -10,20 +10,25 @@ struct SettingsView: View {
             VStack(alignment: .leading, spacing: 14) {
                 header
 
-                sectionTitle("Тема")
+                sectionTitle(L10n.t("section.language"))
+                sectionCard {
+                    languageRow
+                }
+
+                sectionTitle(L10n.t("section.theme"))
                 sectionCard {
                     themeRow
                 }
 
-                sectionTitle("Панель")
+                sectionTitle(L10n.t("section.panel"))
                 sectionCard {
                     panelSizeRow
                 }
 
-                sectionTitle("Быстрые клавиши")
+                sectionTitle(L10n.t("section.hotkeys"))
                 sectionCard {
                     hotkeyRow(
-                        title: "Перевести выделенный текст",
+                        title: L10n.t("hotkey.selection"),
                         caption: "Имитирует ⌘C — требует разрешения «Универсальный доступ»",
                         hotkey: $settings.selectionHotkey
                     )
@@ -31,7 +36,7 @@ struct SettingsView: View {
                     serviceRow
                     Divider()
                     hotkeyRow(
-                        title: "Перевести из буфера обмена",
+                        title: L10n.t("hotkey.clipboard"),
                         caption: "Переводит то, что уже скопировано (⌘C)",
                         hotkey: $settings.clipboardHotkey
                     )
@@ -39,21 +44,21 @@ struct SettingsView: View {
                     permissionRow
                 }
 
-                sectionTitle("Поведение")
+                sectionTitle(L10n.t("section.behavior"))
                 sectionCard {
                     toggleRow(
-                        title: "Переводить автоматически при вводе",
+                        title: L10n.t("auto.translate"),
                         isOn: $settings.autoTranslate
                     )
                     Divider()
                     toggleRow(
-                        title: "Только офлайн",
-                        caption: "Google отключён, текст не отправляется в интернет",
+                        title: L10n.t("offline.only"),
+                        caption: L10n.t("offline.only.caption"),
                         isOn: $settings.offlineOnly
                     )
                     Divider()
                     toggleRow(
-                        title: "Запускать при входе в систему",
+                        title: L10n.t("launch.login"),
                         isOn: $settings.launchAtLogin
                     )
                     if let message = settings.loginItemMessage {
@@ -63,12 +68,12 @@ struct SettingsView: View {
                     }
                 }
 
-                sectionTitle("Обновления")
+                sectionTitle(L10n.t("section.updates"))
                 sectionCard {
                     updateRow
                 }
 
-                Text("Переводчик 1.0 · Google (онлайн) + Apple Translation (офлайн)")
+                Text(L10n.t("version.footer"))
                     .font(.system(size: 10, design: .rounded))
                     .foregroundStyle(Theme.ink.opacity(0.4))
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -95,14 +100,59 @@ struct SettingsView: View {
                     .foregroundStyle(.white)
             }
             VStack(alignment: .leading, spacing: 1) {
-                Text("Настройки")
+                Text(L10n.t("settings"))
                     .font(.system(size: 16, weight: .bold, design: .serif))
                     .foregroundStyle(Theme.ink)
-                Text("быстрые клавиши и поведение")
+                Text(L10n.t("settings.subtitle"))
                     .font(.system(size: 11, design: .rounded))
                     .foregroundStyle(Theme.ink.opacity(0.55))
             }
             Spacer()
+        }
+    }
+
+    private var languageRow: some View {
+        HStack(alignment: .center, spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(L10n.t("section.language"))
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(Theme.ink)
+                Text(L10n.t("language.caption"))
+                    .font(.system(size: 10, design: .rounded))
+                    .foregroundStyle(Theme.ink.opacity(0.5))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer()
+            Menu {
+                ForEach(AppUILanguage.allCases) { language in
+                    Button {
+                        settings.appLanguage = language
+                    } label: {
+                        if settings.appLanguage == language {
+                            Label(language.displayName, systemImage: "checkmark")
+                        } else {
+                            Text(language.displayName)
+                        }
+                    }
+                }
+            } label: {
+                HStack(spacing: 8) {
+                    Text(settings.appLanguage.displayName)
+                        .font(.system(size: 12, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Theme.ink)
+                        .lineLimit(1)
+                    Image(systemName: "chevron.up.chevron.down")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(Theme.secondaryText)
+                }
+                .padding(.horizontal, 12)
+                .frame(height: 34)
+                .background(Capsule().fill(Theme.controlFill))
+                .overlay(Capsule().stroke(Theme.controlStroke, lineWidth: 1))
+            }
+            .menuStyle(.borderlessButton)
+            .buttonStyle(.plain)
+            .environment(\.colorScheme, Theme.isDark ? .dark : .light)
         }
     }
 
@@ -151,16 +201,16 @@ struct SettingsView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Проверить версию")
+                    Text(L10n.t("check.version"))
                         .font(.system(size: 12, weight: .medium, design: .rounded))
                         .foregroundStyle(Theme.ink)
-                    Text("Проверка выполняется только вручную и использует URL релизов из Info.plist")
+                    Text(L10n.t("update.caption"))
                         .font(.system(size: 10, design: .rounded))
                         .foregroundStyle(Theme.ink.opacity(0.5))
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer()
-                Button(settings.isCheckingForUpdates ? "Проверяю…" : "Проверить") {
+                Button(settings.isCheckingForUpdates ? L10n.t("checking") : L10n.t("check")) {
                     settings.checkForUpdates()
                 }
                 .buttonStyle(PillButtonStyle())

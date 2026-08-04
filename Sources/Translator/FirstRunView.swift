@@ -13,10 +13,10 @@ struct FirstRunView: View {
             HStack(spacing: 12) {
                 LogoMark(size: 42)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Первый запуск")
+                    Text(L10n.t("first.title"))
                         .font(.system(size: 20, weight: .bold, design: .serif))
                         .foregroundStyle(Theme.ink)
-                    Text("настройте переводчик под свою работу")
+                    Text(L10n.t("first.subtitle"))
                         .font(.system(size: 12, design: .rounded))
                         .foregroundStyle(Theme.secondaryText)
                 }
@@ -26,12 +26,12 @@ struct FirstRunView: View {
             setupCard {
                 statusRow(
                     icon: axTrusted ? "checkmark.shield.fill" : "shield.slash",
-                    title: "Выделенный текст",
-                    caption: axTrusted ? "Доступ «Универсальный доступ» выдан" : "Для хоткея ⌃⌥T нужен «Универсальный доступ»",
+                    title: L10n.t("selected.text"),
+                    caption: axTrusted ? L10n.t("access.granted") : L10n.t("access.needed"),
                     color: axTrusted ? Theme.sage : Theme.rose
                 )
                 if !axTrusted {
-                    Button("Выдать доступ…") {
+                    Button(L10n.t("grant.access")) {
                         SelectionGrabber.promptForPermission()
                         NSWorkspace.shared.open(
                             URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!
@@ -42,7 +42,7 @@ struct FirstRunView: View {
                 Divider()
                 statusRow(
                     icon: "keyboard",
-                    title: "Быстрые клавиши",
+                    title: L10n.t("section.hotkeys"),
                     caption: "⌃⌥T — выделенный текст, ⌃⌥C — буфер обмена, ⇧⌘E — служба macOS",
                     color: Theme.sage
                 )
@@ -50,17 +50,17 @@ struct FirstRunView: View {
                 HStack(spacing: 12) {
                     statusRow(
                         icon: "arrow.down.circle.fill",
-                        title: "Офлайн-языки",
-                        caption: "Скачайте нужные пары для перевода без интернета",
+                        title: L10n.t("offline.languages"),
+                        caption: L10n.t("offline.download.caption"),
                         color: Theme.sage
                     )
-                    Button("Открыть…") { onOpenOfflineLanguages() }
+                    Button(L10n.t("open")) { onOpenOfflineLanguages() }
                         .buttonStyle(PillButtonStyle())
                 }
             }
 
             setupCard {
-                Text("Тема")
+                Text(L10n.t("section.theme"))
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(Theme.ink)
                 HStack(spacing: 8) {
@@ -92,7 +92,7 @@ struct FirstRunView: View {
 
             HStack {
                 Spacer()
-                Button("Готово") {
+                Button(L10n.t("done")) {
                     settings.completeFirstRun()
                     onDone()
                 }

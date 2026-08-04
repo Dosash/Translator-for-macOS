@@ -6,6 +6,7 @@ struct TranslatorView: View {
     @AppStorage("appTheme") private var appTheme = AppTheme.frostGlass.rawValue
     @AppStorage("panelSizeMode") private var panelSizeMode = PanelSizeMode.standard.rawValue
     @AppStorage("offlineOnly") private var offlineOnly = false
+    @AppStorage("appLanguage") private var appLanguage = AppUILanguage.system.rawValue
     @State private var justCopied = false
 
     private var panelMode: PanelSizeMode {
@@ -51,7 +52,7 @@ struct TranslatorView: View {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(Theme.cardStroke, lineWidth: 1)
         )
-        .id(appTheme)
+        .id("\(appTheme)-\(appLanguage)")
         .translationTask(model.appleConfig) { session in
             await model.runAppleSession(session)
         }
@@ -82,10 +83,10 @@ struct TranslatorView: View {
         HStack(spacing: 10) {
             LogoMark(size: 34)
             VStack(alignment: .leading, spacing: 1) {
-                Text("Переводчик")
+                Text(L10n.t("app.title"))
                     .font(.system(size: 16, weight: .bold, design: .serif))
                     .foregroundStyle(Theme.ink)
-                Text("12 языков · онлайн и офлайн")
+                Text(L10n.t("app.subtitle"))
                     .font(.system(size: 11, design: .rounded))
                     .foregroundStyle(Theme.ink.opacity(0.55))
             }
@@ -106,7 +107,7 @@ struct TranslatorView: View {
         HStack(spacing: 8) {
             languageMenu(
                 title: sourceTitle,
-                options: [(code: "auto", title: "Авто")] + AppLanguage.all.map { (code: $0.googleCode, title: $0.nameRu) },
+                options: [(code: "auto", title: L10n.t("auto"))] + AppLanguage.all.map { (code: $0.googleCode, title: L10n.languageName($0.googleCode)) },
                 selection: $model.sourceCode
             )
 
@@ -116,11 +117,11 @@ struct TranslatorView: View {
                 Image(systemName: "arrow.left.arrow.right")
             }
             .buttonStyle(IconCircleButtonStyle(size: 24))
-            .help("Поменять языки местами")
+            .help(L10n.t("swap.languages"))
 
             languageMenu(
                 title: targetTitle,
-                options: AppLanguage.all.map { (code: $0.googleCode, title: $0.nameRu) },
+                options: AppLanguage.all.map { (code: $0.googleCode, title: L10n.languageName($0.googleCode)) },
                 selection: $model.targetCode
             )
         }
@@ -128,13 +129,13 @@ struct TranslatorView: View {
 
     private var sourceTitle: String {
         if model.sourceCode == "auto" {
-            return "Авто"
+            return L10n.t("auto")
         }
-        return AppLanguage.by(google: model.sourceCode)?.nameRu ?? model.sourceCode
+        return AppLanguage.by(google: model.sourceCode).map { L10n.languageName($0.googleCode) } ?? model.sourceCode
     }
 
     private var targetTitle: String {
-        AppLanguage.by(google: model.targetCode)?.nameRu ?? model.targetCode
+        AppLanguage.by(google: model.targetCode).map { L10n.languageName($0.googleCode) } ?? model.targetCode
     }
 
     private func languageMenu(
@@ -199,7 +200,7 @@ struct TranslatorView: View {
                             .stroke(Theme.cardStroke, lineWidth: 1)
                     )
                 if model.inputText.isEmpty {
-                    Text("Введите текст — или выделите его в любой программе и нажмите ⌃⌥T")
+                    Text(L10n.t("input.placeholder"))
                         .font(.system(size: 12, design: .rounded))
                         .foregroundStyle(Theme.ink.opacity(0.4))
                         .padding(.horizontal, 10)
@@ -222,7 +223,7 @@ struct TranslatorView: View {
 
     private var actionRow: some View {
         HStack(spacing: 10) {
-            Button("Перевести") { model.translate() }
+            Button(L10n.t("translate")) { model.translate() }
                 .buttonStyle(PillButtonStyle())
                 .keyboardShortcut(.return, modifiers: .command)
             if model.isTranslating {
@@ -238,7 +239,7 @@ struct TranslatorView: View {
             }
             .buttonStyle(IconCircleButtonStyle(fill: Theme.sky, size: 26))
             .disabled(model.inputText.isEmpty)
-            .help("Озвучить исходный текст")
+            .help(L10n.t("speak.source"))
             Button {
                 model.inputText = ""
                 model.outputText = ""
@@ -248,14 +249,14 @@ struct TranslatorView: View {
                 Image(systemName: "xmark")
             }
             .buttonStyle(IconCircleButtonStyle(fill: Theme.rose, size: 26))
-            .help("Очистить")
+            .help(L10n.t("clear"))
         }
     }
 
     private var resultCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             ScrollView {
-                Text(model.outputText.isEmpty ? "Здесь появится перевод" : model.outputText)
+                Text(model.outputText.isEmpty ? L10n.t("result.placeholder") : model.outputText)
                     .font(.system(size: 13))
                     .foregroundStyle(model.outputText.isEmpty ? Theme.ink.opacity(0.4) : Theme.ink)
                     .textSelection(.enabled)
@@ -272,7 +273,7 @@ struct TranslatorView: View {
                 }
                 .buttonStyle(IconCircleButtonStyle(fill: Theme.sky, size: 28))
                 .disabled(model.outputText.isEmpty)
-                .help("Озвучить перевод")
+                .help(L10n.t("speak.translation"))
                 Button {
                     model.copyResult()
                     withAnimation { justCopied = true }
@@ -285,7 +286,7 @@ struct TranslatorView: View {
                 }
                 .buttonStyle(IconCircleButtonStyle(size: 28))
                 .disabled(model.outputText.isEmpty)
-                .help("Копировать перевод")
+                .help(L10n.t("copy.translation"))
             }
         }
         .padding(10)
@@ -305,7 +306,7 @@ struct TranslatorView: View {
                 .font(.system(size: 10, design: .rounded))
                 .foregroundStyle(Theme.ink.opacity(0.55))
                 .lineLimit(1)
-            Button("Офлайн-языки…") { model.requestLanguageDownload() }
+            Button(L10n.t("offline.languages")) { model.requestLanguageDownload() }
                 .buttonStyle(.plain)
                 .font(.system(size: 10, weight: .semibold, design: .rounded))
                 .foregroundStyle(Theme.sage)
@@ -318,7 +319,7 @@ struct TranslatorView: View {
                     .foregroundStyle(Theme.ink.opacity(0.45))
             }
             .buttonStyle(.plain)
-            .help("История переводов")
+            .help(L10n.t("history"))
             Button {
                 model.requestOpenSettings()
             } label: {
@@ -327,7 +328,7 @@ struct TranslatorView: View {
                     .foregroundStyle(Theme.ink.opacity(0.45))
             }
             .buttonStyle(.plain)
-            .help("Настройки")
+            .help(L10n.t("settings"))
             Button {
                 NSApp.terminate(nil)
             } label: {
@@ -336,7 +337,7 @@ struct TranslatorView: View {
                     .foregroundStyle(Theme.ink.opacity(0.45))
             }
             .buttonStyle(.plain)
-            .help("Выход")
+            .help(L10n.t("quit"))
         }
     }
 
@@ -350,11 +351,11 @@ struct TranslatorView: View {
                 .foregroundStyle(Theme.ink.opacity(0.68))
                 .lineLimit(2)
             Spacer()
-            Button("Офлайн-языки…") { model.requestLanguageDownload() }
+            Button(L10n.t("offline.languages")) { model.requestLanguageDownload() }
                 .buttonStyle(.plain)
                 .font(.system(size: 10, weight: .semibold, design: .rounded))
                 .foregroundStyle(Theme.sage)
-            Button("Позже") { model.dismissOfflineUpdateNotice() }
+            Button(L10n.t("later")) { model.dismissOfflineUpdateNotice() }
                 .buttonStyle(.plain)
                 .font(.system(size: 10, weight: .semibold, design: .rounded))
                 .foregroundStyle(Theme.ink.opacity(0.45))
