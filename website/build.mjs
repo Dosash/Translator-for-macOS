@@ -1,7 +1,7 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { languageCodes, languageNames, locales, siteUrl } from './src/locales.mjs';
+import { languageCodes, languageNames, locales, processorCompatibility, siteUrl } from './src/locales.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const year = new Date().getFullYear();
@@ -11,7 +11,7 @@ const repositoryUrl = 'https://github.com/Dosash/Translator-for-macOS';
 const releaseUrl = `${repositoryUrl}/releases/latest`;
 const downloadUrl = `${repositoryUrl}/releases/latest/download/Translator.dmg`;
 const releaseVersion = '1.2';
-const siteAssetVersion = '2026-08-04-3';
+const siteAssetVersion = '2026-08-04-4';
 const githubIcon = (className = '') => `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .7a11.5 11.5 0 0 0-3.64 22.4c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.3-5.28-1.29-5.28-5.69 0-1.26.45-2.29 1.19-3.1-.12-.3-.52-1.47.11-3.06 0 0 .97-.31 3.16 1.18a10.98 10.98 0 0 1 5.76 0c2.19-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.71 5.39-5.29 5.68.42.36.79 1.06.79 2.14v3.18c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z"/></svg>`;
 const withVersion = (value) => value.replaceAll('{version}', releaseVersion);
 const interfaceIcons = {
@@ -42,6 +42,7 @@ function structuredData(code, t) {
     description: t.description,
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'macOS 15 or later',
+    processorRequirements: 'Apple Silicon (arm64), M1 or newer. Intel Macs are not supported by the current release.',
     inLanguage: code,
     image: `${siteUrl}/assets/app-icon.png`,
     downloadUrl,
@@ -53,6 +54,7 @@ function structuredData(code, t) {
 
 function page(code, t) {
   const appTitle = code === 'ru' || code === 'uk' ? 'Слово' : 'Slovo';
+  const compatibility = processorCompatibility[code].map(withVersion);
   const ogAlternates = languageCodes.filter((item) => item !== code).map((item) => `    <meta property="og:locale:alternate" content="${locales[item].locale}" />`).join('\n');
   return `<!doctype html>
 <html lang="${code}">
@@ -150,7 +152,7 @@ ${ogAlternates}
 
       <section class="section github-section" id="open-source"><div class="shell github-card reveal"><div class="github-mark">${githubIcon()}</div><div class="github-copy"><div class="eyebrow"><span></span> ${h(t.github[0])}</div><h2>${h(t.github[1])}</h2><p>${h(t.github[2])}</p><div class="github-actions"><a class="button github-primary" href="${repositoryUrl}" target="_blank" rel="noreferrer">${githubIcon('button-github-icon')}${h(t.github[3])}</a><a class="github-release-link" href="${releaseUrl}" target="_blank" rel="noreferrer">${h(withVersion(t.github[4]))} ↗</a></div><small>${h(t.github[5])}</small></div></div></section>
 
-      <section class="section shell download-section" id="download"><div class="download-card reveal"><div class="download-glow glow-left"></div><div class="download-glow glow-right"></div><img src="../assets/app-icon.png" width="96" height="96" alt="${appTitle}" /><h2>${h(t.cta[0])}<br />${h(t.cta[1])}</h2><p>${h(t.cta[2])}</p><a class="button button-light" href="${downloadUrl}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.7 12.9c0-2.6 2.1-3.9 2.2-4-1.2-1.8-3.1-2-3.8-2-1.6-.2-3.2 1-4 1-.9 0-2.3-1-3.7-1-1.9 0-3.6 1.1-4.6 2.8-2 3.4-.5 8.5 1.4 11.3.9 1.4 2 2.9 3.5 2.8 1.4-.1 2-1 3.7-1s2.2 1 3.7 1c1.5 0 2.5-1.4 3.4-2.8 1.1-1.6 1.5-3.2 1.5-3.3-.1 0-3.3-1.3-3.3-4.8ZM14 5.2c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.6 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.7-1.7Z"/></svg>${h(withVersion(t.cta[3]))}</a><small>${h(t.cta[4])}</small></div></section>
+      <section class="section shell download-section" id="download"><div class="download-card reveal"><div class="download-glow glow-left"></div><div class="download-glow glow-right"></div><img src="../assets/app-icon.png" width="96" height="96" alt="${appTitle}" /><h2>${h(t.cta[0])}<br />${h(t.cta[1])}</h2><p>${h(t.cta[2])}</p><div class="compatibility" aria-label="${h(compatibility[0])}"><strong class="compatibility-title">${h(compatibility[0])}</strong><div class="compatibility-grid"><div class="compatibility-item compatibility-supported"><span class="compatibility-status">✓ ${h(compatibility[1])}</span><strong>${h(compatibility[2])}</strong><small>${h(compatibility[3])}</small></div><div class="compatibility-item compatibility-unsupported"><span class="compatibility-status">— ${h(compatibility[4])}</span><strong>${h(compatibility[5])}</strong><small>${h(compatibility[6])}</small></div></div></div><a class="button button-light" href="${downloadUrl}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.7 12.9c0-2.6 2.1-3.9 2.2-4-1.2-1.8-3.1-2-3.8-2-1.6-.2-3.2 1-4 1-.9 0-2.3-1-3.7-1-1.9 0-3.6 1.1-4.6 2.8-2 3.4-.5 8.5 1.4 11.3.9 1.4 2 2.9 3.5 2.8 1.4-.1 2-1 3.7-1s2.2 1 3.7 1c1.5 0 2.5-1.4 3.4-2.8 1.1-1.6 1.5-3.2 1.5-3.3-.1 0-3.3-1.3-3.3-4.8ZM14 5.2c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.6 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.7-1.7Z"/></svg>${h(withVersion(t.cta[3]))}</a><small class="download-meta">${h(t.cta[4])}</small></div></section>
     </main>
 
     <footer class="footer"><div class="shell footer-inner"><a class="brand" href="#top"><img src="../assets/app-icon.png" width="32" height="32" alt="" /><span>Слово</span></a><p>${h(t.tagline)}</p><div class="footer-links"><a class="footer-github" href="${repositoryUrl}" target="_blank" rel="noreferrer">${githubIcon('footer-github-icon')}GitHub</a><a href="#privacy">${h(t.privacyLink)}</a></div><span class="copyright">© ${year} Слово · useslovo.ru</span></div></footer>

@@ -6,6 +6,21 @@ export const languageNames = {
   tr: 'Türkçe', uk: 'Українська',
 };
 
+export const processorCompatibility = {
+  ru: ['Совместимость с процессорами', 'Поддерживается', 'Apple Silicon', 'M1, M2, M3, M4 и новее', 'Не поддерживается', 'Mac с Intel', 'Текущий релиз {version} предназначен только для Apple Silicon'],
+  en: ['Processor compatibility', 'Supported', 'Apple Silicon', 'M1, M2, M3, M4 and newer', 'Not supported', 'Intel Mac', 'The current {version} release is built for Apple Silicon only'],
+  es: ['Compatibilidad de procesadores', 'Compatible', 'Apple Silicon', 'M1, M2, M3, M4 y posteriores', 'No compatible', 'Mac con Intel', 'La versión actual {version} está creada solo para Apple Silicon'],
+  de: ['Prozessorkompatibilität', 'Unterstützt', 'Apple Silicon', 'M1, M2, M3, M4 und neuer', 'Nicht unterstützt', 'Intel Mac', 'Die aktuelle Version {version} ist nur für Apple Silicon erhältlich'],
+  fr: ['Compatibilité des processeurs', 'Compatible', 'Apple Silicon', 'M1, M2, M3, M4 et versions ultérieures', 'Non compatible', 'Mac avec Intel', 'La version actuelle {version} est conçue uniquement pour Apple Silicon'],
+  it: ['Compatibilità dei processori', 'Supportato', 'Apple Silicon', 'M1, M2, M3, M4 e successivi', 'Non supportato', 'Mac con Intel', 'La versione attuale {version} è disponibile solo per Apple Silicon'],
+  pt: ['Compatibilidade de processadores', 'Compatível', 'Apple Silicon', 'M1, M2, M3, M4 e posteriores', 'Não compatível', 'Mac com Intel', 'A versão atual {version} foi criada somente para Apple Silicon'],
+  zh: ['处理器兼容性', '支持', 'Apple 芯片', 'M1、M2、M3、M4 及更新型号', '不支持', '搭载 Intel 的 Mac', '当前 {version} 版本仅适用于 Apple 芯片'],
+  ja: ['プロセッサの互換性', '対応', 'Appleシリコン', 'M1、M2、M3、M4以降', '非対応', 'Intel搭載Mac', '現在のバージョン{version}はAppleシリコン専用です'],
+  ko: ['프로세서 호환성', '지원', 'Apple Silicon', 'M1, M2, M3, M4 이상', '지원하지 않음', 'Intel Mac', '현재 {version} 버전은 Apple Silicon 전용입니다'],
+  tr: ['İşlemci uyumluluğu', 'Desteklenir', 'Apple Silicon', 'M1, M2, M3, M4 ve sonrası', 'Desteklenmez', 'Intel Mac', 'Mevcut {version} sürümü yalnızca Apple Silicon için hazırlanmıştır'],
+  uk: ['Сумісність із процесорами', 'Підтримується', 'Apple Silicon', 'M1, M2, M3, M4 і новіші', 'Не підтримується', 'Mac з Intel', 'Поточний реліз {version} призначений лише для Apple Silicon'],
+};
+
 export const locales = {
   ru: {
     locale: 'ru_RU', title: 'Слово — бесплатный переводчик для macOS',
