@@ -167,6 +167,18 @@ h2 { margin-top: 20px; font-size: clamp(43px, 5vw, 66px); line-height: 1.05; }
 .step-icon { width: 72px; height: 72px; display: grid; place-items: center; margin: 0 auto 25px; border: 1px solid white; border-radius: 21px; color: white; background: var(--green); box-shadow: 0 15px 30px rgba(36,168,122,.2); font-weight: 750; }
 .steps li:nth-child(2) .step-icon { background: var(--lilac); }.steps li:nth-child(3) .step-icon { background: var(--blue); font-size: 13px; }
 .steps h3 { font-size: 23px; }.steps p { color: var(--muted); font-size: 13px; }
+.gatekeeper { margin-top: 70px; padding: 42px 48px; border: 1px solid rgba(255,255,255,.9); border-radius: 28px; background: rgba(255,255,255,.62); box-shadow: 0 20px 65px rgba(31,59,69,.07); }
+.gatekeeper-intro { display: flex; align-items: flex-start; gap: 20px; }
+.gatekeeper-mark { flex: none; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 17px; color: white; background: var(--coral); box-shadow: 0 14px 28px rgba(232,141,121,.25); }
+.gatekeeper-mark svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.gatekeeper-intro h3 { margin: 9px 0 0; font-size: 25px; }
+.gatekeeper-intro p { max-width: 760px; margin: 12px 0 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+.gatekeeper-methods { display: grid; grid-template-columns: 1.15fr 1fr; gap: 28px; margin-top: 30px; padding-top: 28px; border-top: 1px solid var(--line); }
+.gatekeeper-method > strong { display: block; margin-bottom: 12px; font-size: 15px; }
+.gatekeeper-method ol { margin: 0; padding-left: 19px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+.gatekeeper-method ol li + li { margin-top: 9px; }
+.gatekeeper-method > p { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+.gatekeeper-method code { display: block; padding: 14px 16px; border: 1px solid var(--line); border-radius: 13px; background: rgba(22,32,38,.045); color: #22323a; font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 
 .github-section { padding-block: 35px 100px; }
 .github-card { min-height: 420px; display: grid; grid-template-columns: .72fr 1.28fr; align-items: center; gap: 60px; padding: 60px 75px; border: 1px solid rgba(255,255,255,.9); border-radius: 30px; background: rgba(255,255,255,.62); box-shadow: 0 20px 65px rgba(31,59,69,.08); }
@@ -195,9 +207,9 @@ h2 { margin-top: 20px; font-size: clamp(43px, 5vw, 66px); line-height: 1.05; }
 .compatibility-item { min-height: 106px; padding: 18px 20px; display: flex; flex-direction: column; align-items: flex-start; border: 1px solid rgba(255,255,255,.1); border-radius: 17px; background: rgba(255,255,255,.055); }
 .compatibility-item .compatibility-status { margin-bottom: 8px; font-size: 10px; font-weight: 800; letter-spacing: .075em; text-transform: uppercase; }
 .compatibility-supported .compatibility-status { color: #66dfb1; }
-.compatibility-unsupported .compatibility-status { color: #c0c8cb; }
 .compatibility-item > strong { font-size: 16px; }
 .compatibility-item > small { margin-top: 5px; color: rgba(255,255,255,.52); font-size: 11px; line-height: 1.45; }
+.compatibility-note { margin: 12px 0 0; color: rgba(255,255,255,.55); font-size: 12px; line-height: 1.5; text-align: left; }
 .download-card .download-meta { margin-top: 15px; color: rgba(255,255,255,.42); }
 .download-glow { position: absolute; width: 420px; height: 420px; border-radius: 50%; filter: blur(80px); opacity: .3; }
 .glow-left { left: -140px; bottom: -170px; background: #36d79a; }.glow-right { right: -160px; top: -180px; background: #846dea; }
@@ -223,6 +235,7 @@ h2 { margin-top: 20px; font-size: clamp(43px, 5vw, 66px); line-height: 1.05; }
   .feature-wide, .privacy-layout, .github-card { grid-template-columns: 1fr; }.feature-wide { gap: 30px; }.privacy-layout { gap: 25px; }.privacy-copy { max-width: 600px; margin-inline: auto; }
   .github-card { gap: 45px; padding: 55px; }.github-mark { width: 190px; height: 190px; }.github-mark svg { width: 100px; height: 100px; }
   .trust-grid { grid-template-columns: 1fr 1fr; padding-block: 22px; gap: 25px; }.trust-grid > div:nth-child(2) { border-right: 0; }
+  .gatekeeper-methods { grid-template-columns: 1fr; gap: 24px; }
 }
 
 @media (max-width: 680px) {
@@ -235,6 +248,7 @@ h2 { margin-top: 20px; font-size: clamp(43px, 5vw, 66px); line-height: 1.05; }
   .trust-grid { grid-template-columns: 1fr 1fr; }.trust-grid > div { flex-direction: column; gap: 4px; align-items: center; }.trust-grid strong { font-size: 26px; }
   .privacy-visual { min-height: 390px; transform: scale(.82); }.shield-rings { width: 280px; height: 280px; }.label-local { right: 0; }.label-private { left: -20px; }
   .steps { grid-template-columns: 1fr; gap: 45px; }.steps::before { display: none; }.step-number { right: calc(50% - 65px); }
+  .gatekeeper { margin-top: 50px; padding: 28px 22px; border-radius: 22px; }.gatekeeper-intro { gap: 15px; }.gatekeeper-mark { width: 44px; height: 44px; border-radius: 14px; }.gatekeeper-intro h3 { margin-top: 5px; font-size: 21px; }
   .github-section { padding-bottom: 60px; }.github-card { padding: 45px 24px; text-align: center; }.github-copy .eyebrow { justify-content: center; }.github-mark { width: 145px; height: 145px; box-shadow: 0 25px 50px rgba(22,32,38,.2), 0 0 0 14px rgba(255,255,255,.55); }.github-mark svg { width: 75px; height: 75px; }.github-actions { flex-direction: column; gap: 18px; }
   .download-card { min-height: 610px; padding: 55px 20px; }.compatibility-grid { grid-template-columns: 1fr; }.compatibility-item { min-height: 0; }.footer-inner { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 12px; }.copyright { width: 100%; }
 }
