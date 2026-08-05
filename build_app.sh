@@ -3,11 +3,17 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-echo "→ Компиляция (release)…"
-swift build -c release
+echo "→ Компиляция (release, universal: arm64 + x86_64)…"
+swift build -c release --arch arm64 --arch x86_64
 
 APP="Translator.app"
-BINARY=".build/release/Translator"
+# При сборке с несколькими --arch SwiftPM кладёт universal-бинарник
+# в .build/apple/Products/Release, а не в .build/release.
+if [ -f ".build/apple/Products/Release/Translator" ]; then
+  BINARY=".build/apple/Products/Release/Translator"
+else
+  BINARY=".build/release/Translator"
+fi
 ENTITLEMENTS="Translator.entitlements"
 PRIVACY_MANIFEST="Sources/Translator/Resources/PrivacyInfo.xcprivacy"
 
@@ -27,6 +33,9 @@ if [ -f "$PRIVACY_MANIFEST" ]; then
 fi
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 xattr -cr "$APP" 2>/dev/null || true
+
+echo "→ Архитектуры бинарника:"
+lipo -info "$APP/Contents/MacOS/Translator" || true
 
 echo "→ Подпись…"
 IDENTITY="${SIGNING_IDENTITY:-}"
