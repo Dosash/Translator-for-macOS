@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Slovo">
+  <defs>
+    <linearGradient id="slovo-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#78A797" />
+      <stop offset="1" stop-color="#3C6A58" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#slovo-bg)" />
+  <path d="M13 33 L9.5 45 L25 35.5 Z" fill="#F1F5F4" />
+  <rect x="6" y="7" width="37" height="28" rx="9" fill="#F1F5F4" />
+  <g fill="none" stroke="#35604F" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17.6 29.5 L24.5 13.5 L31.4 29.5" />
+    <path d="M20.6 24.4 H28.4" />
+  </g>
+  <path d="M51 31 L59.5 21 L56 32 Z" fill="#E5AEBA" />
+  <rect x="32" y="29" width="26" height="23" rx="7.5" fill="#E5AEBA" />
+  <g fill="none" stroke="#2E4A43" stroke-width="3.4" stroke-linecap="round">
+    <circle cx="43.4" cy="41.4" r="5" />
+    <path d="M48.4 36.4 V46.4" />
+  </g>
+</svg>

@@ -36,8 +36,8 @@ function structuredData(code, t) {
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Слово',
-    alternateName: 'Slovo',
+    name: code === 'ru' || code === 'uk' ? 'Слово' : 'Slovo',
+    alternateName: code === 'ru' || code === 'uk' ? 'Slovo' : 'Слово',
     url: `${siteUrl}/${code}/`,
     description: t.description,
     applicationCategory: 'UtilitiesApplication',
@@ -82,8 +82,9 @@ ${ogAlternates}
     <meta name="twitter:description" content="${h(t.description)}" />
     <meta name="twitter:image" content="${siteUrl}/assets/app-icon.png" />
     <title>${h(t.title)}</title>
-    <link rel="icon" href="../assets/app-icon.png" />
-    <link rel="apple-touch-icon" href="../assets/app-icon.png" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="stylesheet" href="../styles.css?v=${siteAssetVersion}" />
     <script type="application/ld+json">${structuredData(code, t)}</script>
     <script src="../script.js?v=${siteAssetVersion}" defer></script>
@@ -93,7 +94,7 @@ ${ogAlternates}
 
     <header class="site-header" data-header>
       <div class="shell header-inner">
-        <a class="brand" href="#top" aria-label="${h(t.home)}"><img src="../assets/app-icon.png" width="36" height="36" alt="" /><span>Слово</span></a>
+        <a class="brand" href="#top" aria-label="${h(t.home)}"><img src="../assets/app-icon.png" width="36" height="36" alt="" /><span>${appTitle}</span></a>
         <button class="menu-button" type="button" aria-label="${h(t.openMenu)}" aria-expanded="false" data-menu-button><span></span><span></span></button>
         <nav class="nav" aria-label="${h(t.nav[0])}" data-nav>
           <a href="#features">${h(t.nav[0])}</a><a href="#privacy">${h(t.nav[1])}</a><a href="#how-it-works">${h(t.nav[2])}</a>
@@ -156,7 +157,7 @@ ${ogAlternates}
       <section class="section shell download-section" id="download"><div class="download-card reveal"><div class="download-glow glow-left"></div><div class="download-glow glow-right"></div><img src="../assets/app-icon.png" width="96" height="96" alt="${appTitle}" /><h2>${h(t.cta[0])}<br />${h(t.cta[1])}</h2><p>${h(t.cta[2])}</p><div class="compatibility" aria-label="${h(compatibility[0])}"><strong class="compatibility-title">${h(compatibility[0])}</strong><div class="compatibility-grid"><div class="compatibility-item compatibility-supported"><span class="compatibility-status">✓ ${h(compatibility[1])}</span><strong>${h(compatibility[2])}</strong><small>${h(compatibility[3])}</small></div><div class="compatibility-item compatibility-supported"><span class="compatibility-status">✓ ${h(compatibility[4])}</span><strong>${h(compatibility[5])}</strong><small>${h(compatibility[6])}</small></div></div><p class="compatibility-note">${h(compatibility[7])}</p></div><a class="button button-light" href="${downloadUrl}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.7 12.9c0-2.6 2.1-3.9 2.2-4-1.2-1.8-3.1-2-3.8-2-1.6-.2-3.2 1-4 1-.9 0-2.3-1-3.7-1-1.9 0-3.6 1.1-4.6 2.8-2 3.4-.5 8.5 1.4 11.3.9 1.4 2 2.9 3.5 2.8 1.4-.1 2-1 3.7-1s2.2 1 3.7 1c1.5 0 2.5-1.4 3.4-2.8 1.1-1.6 1.5-3.2 1.5-3.3-.1 0-3.3-1.3-3.3-4.8ZM14 5.2c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.6 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.7-1.7Z"/></svg>${h(withVersion(t.cta[3]))}</a><small class="download-meta">${h(t.cta[4])}</small></div></section>
     </main>
 
-    <footer class="footer"><div class="shell footer-inner"><a class="brand" href="#top"><img src="../assets/app-icon.png" width="32" height="32" alt="" /><span>Слово</span></a><p>${h(t.tagline)}</p><div class="footer-links"><a class="footer-github" href="${repositoryUrl}" target="_blank" rel="noreferrer">${githubIcon('footer-github-icon')}GitHub</a><a href="#privacy">${h(t.privacyLink)}</a></div><span class="copyright">© ${year} Слово · useslovo.ru</span></div></footer>
+    <footer class="footer"><div class="shell footer-inner"><a class="brand" href="#top"><img src="../assets/app-icon.png" width="32" height="32" alt="" /><span>${appTitle}</span></a><p>${h(t.tagline)}</p><div class="footer-links"><a class="footer-github" href="${repositoryUrl}" target="_blank" rel="noreferrer">${githubIcon('footer-github-icon')}GitHub</a><a href="#privacy">${h(t.privacyLink)}</a></div><span class="copyright">© ${year} ${appTitle} · useslovo.ru</span></div></footer>
   </body>
 </html>
 `;
@@ -171,7 +172,10 @@ function rootPage() {
     <meta name="robots" content="index, follow" /><meta name="description" content="Slovo — a fast, private translator for macOS, available in 12 languages." />
     <link rel="canonical" href="${siteUrl}/" />
 ${alternateLinks()}
-    <title>Slovo — translator for macOS</title><link rel="icon" href="assets/app-icon.png" />
+    <title>Slovo — translator for macOS</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f4f7f9;color:#162026;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{width:min(620px,calc(100% - 40px));text-align:center}.card img{width:84px;border-radius:20px}.card h1{font:500 58px/1.05 Iowan Old Style,Baskerville,serif;margin:24px 0 12px}.card p{color:#66737a}.languages{margin-top:30px;display:flex;flex-wrap:wrap;justify-content:center;gap:9px}.languages a{padding:10px 14px;border:1px solid rgba(20,37,45,.12);border-radius:999px;color:inherit;text-decoration:none;background:#fff}.languages a:hover{border-color:#24a87a;color:#157f5c}</style>
     <script>!function(){var s=${JSON.stringify(languageCodes)},p='';try{p=localStorage.getItem('slovo-language')||''}catch(e){}var l=(p||navigator.languages&&navigator.languages[0]||navigator.language||'en').toLowerCase().split('-')[0];location.replace('./'+(s.includes(l)?l:'en')+'/'+location.hash)}();</script>
   </head>
